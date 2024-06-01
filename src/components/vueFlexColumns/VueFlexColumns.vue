@@ -158,7 +158,7 @@
                 <option :value="nominator - 1" v-for="nominator in nominators" :key="nominator">{{ nominator - 1 }}</option>
               </select>
               <span class="separator">/</span>
-              <input v-model="ratioDenominator" min="1" type="number" @keypress="validate($event, 'ratioDenominator')" @mouseover="onOffsetSettingMouseAction(index, 'right', true)" @mouseleave="onOffsetSettingMouseAction(index, 'right', false)" :class="{ error: !ratioDenominator }" @input="revealOffsetMask(index, 'right')">
+              <input v-model="ratioDenominator" min="1" type="number" @keypress="validate($event, 'ratioDenominator')" @mouseover="onOffsetSettingMouseAction(index, EnumOffsetType.RIGHT, true)" @mouseleave="onOffsetSettingMouseAction(index, EnumOffsetType.RIGHT, false)" :class="{ error: !ratioDenominator }" @input="revealOffsetMask(index, EnumOffsetType.RIGHT)">
             </div>
           </div>
           <div class="column-option">
@@ -213,10 +213,6 @@ let rowGapHighlightMasks = reactive({});
 let columnResizeIndicators = reactive({});
 let rowsNumber = ref(1);
 let viewportType = ref(EnumViewportType.DESKTOP);
-
-function created(): void {
-  console.log('created');
-}
 
 setColumnsParameters();
 
@@ -319,14 +315,14 @@ function setColumnsParameters(): void {
 
 const columnStyles = computed({
   get() {
-    return generateColumnStyles() as HTMLAttributes;
+    return generateColumnStyles() as any;
   },
   set() {}
 });
 
 const widgetStyles = computed({
   get(){
-    return generateWidgetStyles() as HTMLAttributes;
+    return generateWidgetStyles() as any;
   },
   set() {}
 });
