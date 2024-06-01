@@ -1,0 +1,230 @@
+.vue-flex-columns {
+    padding: 1vw 5vw;
+    min-height: 100%;
+    background-color: #f6f7f8;
+    border: 2px solid lightgrey;
+    @media (max-width: 1199px) {
+        padding: 1vw 2.5vw;
+    }
+    @media (max-width: 999px) {
+        padding: 0.5vw 1vw;
+    }
+    &.desktop {
+        background-color: white;
+        border: none;
+    }
+    &.tabletHorizontal {
+        max-width: 1199px;
+        padding: 1vw 2.5vw;
+    }
+    &.tabletVertical {
+        max-width: 991px;
+        padding: 1vw 2.5vw;
+    }
+    &.mobile {
+        max-width: 767px;
+        padding: 0.5vw 1vw;
+    }
+    h1 {
+        margin-bottom: 20px;
+    }
+    .widget-columns {
+        position: relative;
+        min-height: 180px;
+        padding: 10px;
+        user-select: none;
+        -webkit-user-select: none;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        background-color: lightgray;
+        transition: height 0.3s ease-in-out;
+        .column-container {
+            outline: 1px dashed green;
+            margin: 5px;
+            min-height: 180px;
+            border-radius: 1px;
+            overflow: hidden;
+            transition: background-color 0.3s ease-in-out;
+            p {
+                font-size: 14px;
+                line-height: 1;
+                font-family: monospace;
+                color: green;
+                overflow: hidden; 
+                text-align: center;
+                margin: auto;
+                padding-top: 10px;
+                width: calc(100% - 8px);
+            }
+            &:hover, &.highlighted {
+                background-color: lightgreen;
+            }
+            .widget-area {
+                border: 1px dashed blue;
+                margin: 20px;
+                height: calc(100% - 40px - 24px);
+                transition: all 0.3s ease-in-out;
+                p {
+                    font-size: 14px;
+                    line-height: 1;
+                    font-family: monospace;
+                    color: blue;
+                    text-align: center;
+                    overflow: hidden;
+                    margin: auto;
+                    padding-top: 10px;
+                    width: calc(100% - 8px);
+                }
+                &:hover {
+                    background-color: lightblue;
+                }
+            }
+        }
+        .offsetHighlight {
+            position: absolute;
+            opacity: 0;
+            background-color: rgba(#FFA500, 0.33);
+            transition: opacity 0.3s ease-in-out;
+            &.filled {
+                background-image: url('../../assets/offset-mask-background.svg');
+                background-repeat: repeat;
+            }
+            &.visible {
+                opacity: 1;
+            }
+        }
+        .columnGapHighlight, .rowGapHighlight {
+            position: absolute;
+            opacity: 0;
+            background-color: rgba(#3d98cc, 0.33);
+            transition: opacity 0.3s ease-in-out;
+            &.filled {
+                background-image: url('../../assets/gap-mask-background.svg');
+                background-repeat: repeat;
+            }
+            &.visible {
+                opacity: 1;
+            }
+            &.hide {
+                display: none;
+            }
+        }
+        .rowGapHighlight {
+            left: 0;
+            margin: 0 15px;
+            width: calc(100% - 30px);
+        }
+        .columnResizeIndicator {
+            position: absolute;
+            opacity: 0;
+            height: 180px;
+            width: 4px;
+            background-image: repeating-linear-gradient(0, grey, grey 10px, transparent 10px, transparent 20px, grey 20px);
+            background-size: 4px 100%;
+            background-position: 0 -4px;
+            background-repeat: no-repeat;
+            transition: opacity 0.3s ease-in-out;
+            cursor: col-resize;
+            z-index: 2;
+            &:hover, &.duringDrag {
+                opacity: 0.3;
+            }
+        }
+    }
+    .settings {
+        margin-top: 50px;
+        input {
+            height: 18px;
+            width: 50px;
+            transition: border-color 0.3s ease-in-out;
+            &.error {
+                border: 1px solid red;
+                height: 20px;
+                width: 52px;
+                border-radius: 2px;
+            }
+        }
+        select {
+            height: 24px;
+            width: 58px;
+        }
+        p {
+            margin: 0;
+        }
+        .main-settings, .absolute-settings, .units-settings {
+            > div {
+                display: flex;
+                align-items: center;
+                padding-bottom: 12px;
+                span {
+                    margin-right: 8px;
+                    &.separator {
+                        margin-left: 2px;
+                        margin-right: 2px;
+                    }
+                }
+            }
+            .viewport-settings {
+                display: flex;
+                align-items: center;
+                svg {
+                    border: 1px solid black;
+                    border-radius: 4px;
+                    padding: 4px;
+                    margin-right: 8px;
+                    transition: all .3s ease-in-out;
+                    cursor: pointer;
+                    &.selected {
+                        background-color: lightgray;
+                    }
+                }
+            }
+            .column-settings {
+                min-width: 900px;
+            }
+            .alignment, .units {
+                > div {
+                    border: 1px solid black;
+                    border-radius: 4px;
+                    padding: 2px 6px;
+                    margin-right: 8px;
+                    cursor: pointer;
+                    transition: all .3s ease-in-out;
+                    overflow: hidden;
+                    &.selected {
+                        background-color: lightgray;
+                    }
+                }
+            }
+            .units {
+                margin-bottom: 8px;
+            }
+            .inputs-area {
+                display: flex;
+                align-items: center;
+                column-gap: 4px;
+            }
+        }
+        .columns {
+            overflow-x: auto;
+            margin-top: 10px;
+            .column-option {
+                display: flex;
+                align-items: center;
+                margin-right: 16px;
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+            p {
+                font-weight: 700;
+                margin-right: 20px;
+            }
+        }
+    }
+    .dev-area {
+        margin-top: 50px;
+        font-family: monospace;
+    }
+}
