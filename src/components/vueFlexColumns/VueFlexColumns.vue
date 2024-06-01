@@ -19,10 +19,10 @@
         <h3>Widget settings</h3>
         <div class="viewport-settings">
           <span>Viewport:</span>
-          <svg-icon type="mdi" :path="mdiMonitor" :class="{ selected: viewportType === 'desktop' }" @click.stop="setViewportType('desktop')" />
-          <svg-icon type="mdi" :path="mdiTablet" :class="{ selected: viewportType === 'tabletHorizontal' }" @click.stop="setViewportType('tabletHorizontal')" />
-          <svg-icon type="mdi" :path="mdiTablet" :class="{ selected: viewportType === 'tabletVertical' }" :rotate="90" @click.stop="setViewportType('tabletVertical')" />
-          <svg-icon type="mdi" :path="mdiCellphone" :class="{ selected: viewportType === 'mobile' }" @click.stop="setViewportType('mobile')" />
+          <svg-icon type="mdi" :path="mdiMonitor" :class="{ selected: viewportType === EnumViewportType.DESKTOP }" @click.stop="setViewportType(EnumViewportType.DESKTOP)" />
+          <svg-icon type="mdi" :path="mdiTablet" :class="{ selected: viewportType === EnumViewportType.TABLET_HORIZONTAL }" @click.stop="setViewportType(EnumViewportType.TABLET_HORIZONTAL)" />
+          <svg-icon type="mdi" :path="mdiTablet" :class="{ selected: viewportType === EnumViewportType.TABLET_VERTICAL }" :rotate="90" @click.stop="setViewportType(EnumViewportType.TABLET_VERTICAL)" />
+          <svg-icon type="mdi" :path="mdiCellphone" :class="{ selected: viewportType === EnumViewportType.MOBILE }" @click.stop="setViewportType(EnumViewportType.MOBILE)" />
         </div>
         <div>
           <span>Number of columns: </span>
@@ -105,8 +105,8 @@
           <div class="column-option">
             <span>Left offset:</span>
             <div class="inputs-area">
-              <input v-model="columnsOffsets[index].left" min="0" type="number" @keypress="validate($event, 'width')" @mouseover="onOffsetSettingMouseAction(index, 'left', true)" @mouseleave="onOffsetSettingMouseAction(index, 'left', false)" @input="revealOffsetMask(index, 'left')">
-              <select v-model="columnsOffsets[index].leftUnit" @mouseover="onOffsetSettingMouseAction(index, 'left', true)" @mouseleave="onOffsetSettingMouseAction(index, 'left', false)">
+              <input v-model="columnsOffsets[index].left" min="0" type="number" @keypress="validate($event, 'width')" @mouseover="onOffsetSettingMouseAction(index, EnumOffsetType.LEFT, true)" @mouseleave="onOffsetSettingMouseAction(index, EnumOffsetType.LEFT, false)" @input="revealOffsetMask(index, EnumOffsetType.LEFT)">
+              <select v-model="columnsOffsets[index].leftUnit" @mouseover="onOffsetSettingMouseAction(index, EnumOffsetType.LEFT, true)" @mouseleave="onOffsetSettingMouseAction(index, EnumOffsetType.LEFT, false)">
                 <option v-for="unit in UNITS" :key="unit">{{ unit }}</option>
               </select>
             </div>
@@ -114,8 +114,8 @@
           <div class="column-option">
             <span>Right offset:</span>
             <div class="inputs-area">
-              <input v-model="columnsOffsets[index].right" min="0" type="number" @keypress="validate($event, 'width')" @mouseover="onOffsetSettingMouseAction(index, 'right', true)" @mouseleave="onOffsetSettingMouseAction(index, 'right', false)" @input="revealOffsetMask(index, 'right')">
-              <select v-model="columnsOffsets[index].rightUnit" @mouseover="onOffsetSettingMouseAction(index, 'right', true)" @mouseleave="onOffsetSettingMouseAction(index, 'right', false)">
+              <input v-model="columnsOffsets[index].right" min="0" type="number" @keypress="validate($event, 'width')" @mouseover="onOffsetSettingMouseAction(index, EnumOffsetType.RIGHT, true)" @mouseleave="onOffsetSettingMouseAction(index, EnumOffsetType.RIGHT, false)" @input="revealOffsetMask(index, EnumOffsetType.RIGHT)">
+              <select v-model="columnsOffsets[index].rightUnit" @mouseover="onOffsetSettingMouseAction(index, EnumOffsetType.RIGHT, true)" @mouseleave="onOffsetSettingMouseAction(index, EnumOffsetType.RIGHT, false)">
                 <option v-for="unit in UNITS" :key="unit">{{ unit }}</option>
               </select>
             </div>
@@ -144,17 +144,17 @@
           <div class="column-option">
             <span>Left offset:</span>
             <div class="inputs-area">
-              <select v-model="columnsOffsets[index].left" @mouseover="onOffsetSettingMouseAction(index, 'left', true)" @mouseleave="onOffsetSettingMouseAction(index, 'left', false)">
+              <select v-model="columnsOffsets[index].left" @mouseover="onOffsetSettingMouseAction(index, EnumOffsetType.LEFT, true)" @mouseleave="onOffsetSettingMouseAction(index, EnumOffsetType.LEFT, false)">
                 <option :value="nominator - 1" v-for="nominator in nominators" :key="nominator">{{ nominator - 1 }}</option>
               </select>
               <span class="separator">/</span>
-              <input v-model="ratioDenominator" min="1" type="number" @keypress="validate($event, 'ratioDenominator')" :class="{ error: !ratioDenominator }" @mouseover="onOffsetSettingMouseAction(index, 'left', true)" @mouseleave="onOffsetSettingMouseAction(index, 'left', false)" @input="revealOffsetMask(index, 'left')">
+              <input v-model="ratioDenominator" min="1" type="number" @keypress="validate($event, 'ratioDenominator')" :class="{ error: !ratioDenominator }" @mouseover="onOffsetSettingMouseAction(index, EnumOffsetType.LEFT, true)" @mouseleave="onOffsetSettingMouseAction(index, EnumOffsetType.LEFT, false)" @input="revealOffsetMask(index, EnumOffsetType.LEFT)">
             </div>
           </div>
           <div class="column-option">
             <span>Right offset:</span>
             <div class="inputs-area">
-              <select v-model="columnsOffsets[index].right" @mouseover="onOffsetSettingMouseAction(index, 'right', true)" @mouseleave="onOffsetSettingMouseAction(index, 'right', false)">
+              <select v-model="columnsOffsets[index].right" @mouseover="onOffsetSettingMouseAction(index, EnumOffsetType.RIGHT, true)" @mouseleave="onOffsetSettingMouseAction(index, EnumOffsetType.RIGHT, false)">
                 <option :value="nominator - 1" v-for="nominator in nominators" :key="nominator">{{ nominator - 1 }}</option>
               </select>
               <span class="separator">/</span>
@@ -178,9 +178,9 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref, watch, computed, nextTick } from 'vue';
+import { reactive, ref, watch, computed, nextTick, HTMLAttributes } from 'vue';
 import { EnumOffsetType, getMarginProperty } from '../../model/enum/EnumOffsetType';
-import { EnumViewportType, isViewportMobile } from '../../model/enum/EnumViewportType';
+import { EnumViewportType, isViewportMobile, isWindowWidthMobile } from '../../model/enum/EnumViewportType';
 import { getComputedPropertyValue } from '../../utils/CssUtils';
 import SvgIcon from '@jamescoyle/vue-icon'
 import { mdiMonitor, mdiTablet, mdiCellphone } from '@mdi/js';
@@ -189,7 +189,7 @@ import type { ColumnElement, Gap } from '../../model/typings';
 import { ColumnStyle } from '../../model/ColumnStyle';
 import { WidgetStyle } from '../../model/WidgetStyle';
 import type * as CSS from 'csstype';
-import { EnumJustifyContent } from '../../../../vue-flex-columns/src/model/enum/EnumJustifyContent';
+import { EnumJustifyContent } from '../../model/enum/EnumJustifyContent';
 import { OffsetParams } from '../../model/OffsetParams';
 
 const COLUMN_CONTAINER_MARGIN = 5;
@@ -226,12 +226,21 @@ watch([columnsNumber, absolute, viewportType], () => {
 
 watch([columnsNumber, absolute, rowGap, columnGap, columnsWidths, columnsRatios, columnsOffsets, ratioDenominator, columnsOrders, alignment, viewportType], () => {
   nextTick(() => {
-      setOffsetMasksStyles(EnumOffsetType.LEFT);
-      setOffsetMasksStyles(EnumOffsetType.RIGHT);
-      setGapMasksStyles();
-      setResizeIndicatorsStyles();
+    refreshStyles();
   })
 }, { deep: true, immediate: true });
+
+window.addEventListener('resize', () => {
+  setColumnsParameters();
+  refreshStyles();
+})
+
+function refreshStyles() {
+  setOffsetMasksStyles(EnumOffsetType.LEFT);
+  setOffsetMasksStyles(EnumOffsetType.RIGHT);
+  setGapMasksStyles();
+  setResizeIndicatorsStyles();
+}
 
 function setColumnsParameters(): void {
   const columnsWidthsArray = [];
@@ -245,9 +254,11 @@ function setColumnsParameters(): void {
   const columnResizeIndicatorsArray = [];
   let i = 0;
 
+  const viewportMobile = isViewportMobile(viewportType.value) || isWindowWidthMobile(window.innerWidth);
+
   while (i < columnsNumber.value) {
-    columnsWidthsArray.push({ col: i, val: { value: !isViewportMobile(viewportType.value) ? 100 / columnsNumber.value : 100, unit: '%' } });
-    columnsRatiosArray.push({ col: i, val: !isViewportMobile(viewportType.value) ? 1 : ratioDenominator.value });
+    columnsWidthsArray.push({ col: i, val: { value: !viewportMobile ? 100 / columnsNumber.value : 100, unit: '%' } });
+    columnsRatiosArray.push({ col: i, val: !viewportMobile ? 1 : ratioDenominator.value });
     columnsOffsetsArray.push({ col: i, val: { left: 0, leftUnit: '%', right: 0, rightUnit: '%' } });
     columnsOrdersArray.push({ col: i, val: i + 1 });
     columnsHighlightArray.push({ col: i, val: false });
@@ -308,14 +319,14 @@ function setColumnsParameters(): void {
 
 const columnStyles = computed({
   get() {
-    return generateColumnStyles();
+    return generateColumnStyles() as HTMLAttributes;
   },
   set() {}
 });
 
 const widgetStyles = computed({
-  get() {
-    return generateWidgetStyles();
+  get(){
+    return generateWidgetStyles() as HTMLAttributes;
   },
   set() {}
 });
@@ -486,7 +497,7 @@ function setOffsetMasksStyles(type: EnumOffsetType): void {
     setOffsetParams(offsetHighlightMasks[index][type], new OffsetParams({
       show: false,
       top: `${columnRect.top - containerRect.top}px`,
-      left: type === 'left'
+      left: type === EnumOffsetType.LEFT
         ? `${columnRect.left - containerRect.left - margin}px`
         : `${columnRect.left - containerRect.left + columnRect.width + (filled && margin > COLUMN_CONTAINER_MARGIN ? COLUMN_CONTAINER_MARGIN : 0)}px`,
       height: `${columnRect.height}px`,

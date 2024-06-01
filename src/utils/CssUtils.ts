@@ -1,9 +1,7 @@
-import type * as CSS from 'csstype';
-
 const PIXEL_UNIT = 'px';
 const PERCENTAGE_UNIT = '%';
 
-export function getComputedPropertyValue(element: Element | null, propertyName: CSS.Property, parentElementSize?: number): number {
+export function getComputedPropertyValue(element: Element | null, propertyName: string, parentElementSize?: number): number {
     if (!element) {
         return 0;
     }
