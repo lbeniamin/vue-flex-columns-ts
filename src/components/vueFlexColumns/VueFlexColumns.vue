@@ -510,7 +510,7 @@ function setGapMasksStyles(): void {
   const columnGapValue = getComputedPropertyValue(containerElement, 'column-gap', containerWidth);
   const rowGapValue = getComputedPropertyValue(containerElement, 'row-gap', containerHeight);
   let columnsElements: ColumnElement[] = Array.from(document.querySelectorAll('.widget-columns .column-container'));
-  columnsElements = columnsElements.toSorted((a: ColumnElement, b: ColumnElement) => Number(getComputedStyle(a)['order']) - Number(getComputedStyle(b)['order']));
+  columnsElements = columnsElements.sort((a, b) => Number(getComputedStyle(a)['order']) - Number(getComputedStyle(b)['order']));
   let summaryWidthPerRow = 0;
   let rowsCount = 0;
 
@@ -622,7 +622,7 @@ function setResizeIndicatorsStyles(): void {
     const containerElement = document.querySelector('.widget-columns');
     const containerRect = containerElement.getBoundingClientRect();
     let columnsElements = Array.from(document.querySelectorAll('.widget-columns .column-container'));
-    columnsElements = columnsElements.toSorted((a: ColumnElement, b: ColumnElement) => Number(getComputedStyle(a)['order']) - Number(getComputedStyle(b)['order']));
+    columnsElements = columnsElements.sort((a, b) => Number(getComputedStyle(a)['order']) - Number(getComputedStyle(b)['order']));
 
     columnsElements.forEach((column, index) => {
       const columnRect = column.getBoundingClientRect();

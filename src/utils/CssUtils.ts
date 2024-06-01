@@ -3,8 +3,12 @@ import type * as CSS from 'csstype';
 const PIXEL_UNIT = 'px';
 const PERCENTAGE_UNIT = '%';
 
-export function getComputedPropertyValue(element: Element, propertyName: CSS.Property, parentElementSize?: number): number {
-    const computedProperty = getComputedStyle(element)[propertyName];
+export function getComputedPropertyValue(element: Element | null, propertyName: CSS.Property, parentElementSize?: number): number {
+    if (!element) {
+        return 0;
+    }
+    
+    const computedProperty = getComputedStyle(element)[propertyName]
     if (computedProperty.includes(PIXEL_UNIT)) {
         return Number(computedProperty.replace('px', ''));
     }
