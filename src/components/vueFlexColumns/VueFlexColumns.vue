@@ -190,6 +190,7 @@ import { ColumnStyle } from '../../model/ColumnStyle';
 import { WidgetStyle } from '../../model/WidgetStyle';
 import type * as CSS from 'csstype';
 import { EnumJustifyContent } from '../../../../vue-flex-columns/src/model/enum/EnumJustifyContent';
+import { OffsetParams } from '../../model/OffsetParams';
 
 const COLUMN_CONTAINER_MARGIN = 5;
 const COLUMN_CONTAINER_HEIGHT = 180;
@@ -436,7 +437,7 @@ const possibleOrders = computed({
   set () {}
 });
 
-function setAlignment(position) {
+function setAlignment(position: string) {
   alignment.left = false;
   alignment.right = false;
   alignment.center = false;
@@ -467,7 +468,7 @@ function unhighlightColumns(): void {
   });
 }
 
-function setOffsetMasksStyles(type): void {
+function setOffsetMasksStyles(type: EnumOffsetType): void {
   const containerElement = document.querySelector('.widget-columns');
   const containerRect = containerElement.getBoundingClientRect();
 
@@ -482,7 +483,7 @@ function setOffsetMasksStyles(type): void {
     const margin = getComputedPropertyValue(columnElement, getMarginProperty(type));
     const filled = Number(offsetValue) > 0;
 
-    setOffsetParams(offsetHighlightMasks[index][type], {
+    setOffsetParams(offsetHighlightMasks[index][type], new OffsetParams({
       show: false,
       top: `${columnRect.top - containerRect.top}px`,
       left: type === 'left'
@@ -491,13 +492,13 @@ function setOffsetMasksStyles(type): void {
       height: `${columnRect.height}px`,
       width: filled && margin > COLUMN_CONTAINER_MARGIN ? `${margin - COLUMN_CONTAINER_MARGIN}px` : `${COLUMN_CONTAINER_MARGIN}px`,
       filled,
-    });
+    }));
 
     index++;
   }
 }
 
-function setGapMasksStyles() {
+function setGapMasksStyles(): void {
   const containerElement = document.querySelector('.widget-columns');
   const containerPaddingLeft = getComputedPropertyValue(containerElement, 'padding-left', 0);
   const containerPaddingRight = getComputedPropertyValue(containerElement, 'padding-right', 0);
@@ -552,12 +553,12 @@ function setGapMasksStyles() {
   }
 }
 
-function markOffsetMask(index: number, type): void {
+function markOffsetMask(index: number, type: EnumOffsetType): void {
   unMarkOffsetHighlightMasks();
   offsetHighlightMasks[index][type].show = true;
 }
 
-function onOffsetSettingMouseAction(index: number, type, hovered: boolean) {
+function onOffsetSettingMouseAction(index: number, type: EnumOffsetType, hovered: boolean) {
   offsetHighlightMasks[index][type].hovered = hovered;
   hovered ? markOffsetMask(index, type) : unMarkOffsetHighlightMasks();
 }
@@ -608,7 +609,7 @@ function revealRowGapMask(): void {
   }, 500);
 }
 
-function revealOffsetMask(index: number, type): void {
+function revealOffsetMask(index: number, type: EnumOffsetType): void {
   markOffsetMask(index, type);
   setTimeout(() => {
     if (!offsetHighlightMasks[index][type].hovered) {
@@ -621,7 +622,7 @@ function setResizeIndicatorsStyles(): void {
     const containerElement = document.querySelector('.widget-columns');
     const containerRect = containerElement.getBoundingClientRect();
     let columnsElements = Array.from(document.querySelectorAll('.widget-columns .column-container'));
-    columnsElements = columnsElements.toSorted((a, b) => Number(getComputedStyle(a)['order']) - Number(getComputedStyle(b)['order']));
+    columnsElements = columnsElements.toSorted((a: ColumnElement, b: ColumnElement) => Number(getComputedStyle(a)['order']) - Number(getComputedStyle(b)['order']));
 
     columnsElements.forEach((column, index) => {
       const columnRect = column.getBoundingClientRect();
@@ -634,12 +635,12 @@ function setResizeIndicatorsStyles(): void {
     });
 }
 
-function onIndicatorMouseDown(event, index) {
+function onIndicatorMouseDown(event: MouseEvent, index: number): void {
   const containerElement = document.querySelector('.widget-columns');
   columnResizeIndicators[index].duringDrag = true;
   let removeEventListener = false;
 
-  function onIndicatorMove(e) {
+  function onIndicatorMove(e: MouseEvent): void {
     columnResizeIndicators[index].duringDrag = e.buttons;
     if (!columnResizeIndicators[index].duringDrag || removeEventListener) {
       containerElement.removeEventListener('mousemove', onIndicatorMove);
@@ -652,12 +653,12 @@ function onIndicatorMouseDown(event, index) {
   containerElement.addEventListener('mousemove', onIndicatorMove);
 }
 
-function onIndicatorMouseUp(event, index) {
+function onIndicatorMouseUp(event: MouseEvent, index: number): void {
   const containerElement = document.querySelector('.widget-columns');
   columnResizeIndicators[index].duringDrag = false;
   let removeEventListener = false;
 
-  function onIndicatorMove(e) {
+  function onIndicatorMove(e: MouseEvent): void {
     columnResizeIndicators[index].duringDrag = e.buttons;
     if (!columnResizeIndicators[index].duringDrag || removeEventListener) {
       containerElement.removeEventListener('mousemove', onIndicatorMove);
@@ -672,7 +673,7 @@ function onIndicatorMouseUp(event, index) {
   }
 }
 
-function resizeColumn(e, index, containerElement) {
+function resizeColumn(e: MouseEvent, index: number, containerElement: Element): boolean {
   const positionOfColumn = columnResizeIndicators[index].column.getBoundingClientRect().right + COLUMN_CONTAINER_MARGIN;
   const containerWidth = containerElement.getBoundingClientRect().width;
   const containerRight = containerElement.getBoundingClientRect().right;
@@ -685,7 +686,7 @@ function resizeColumn(e, index, containerElement) {
   return resizeAbsoluteColumn(index, positionOfColumn, containerElement, containerWidth, containerRight);
 }
 
-function resizeAbsoluteColumn(index, positionOfColumn, containerElement, containerWidth, containerRight) {
+function resizeAbsoluteColumn(index: number, positionOfColumn: number, containerElement: Element, containerWidth: number, containerRight: number): boolean {
   const deltaX = calculateDeltaX(index, containerElement);
   const predictedWidth = columnsWidths[index].value + deltaX.actual;
   const predictedRight = positionOfColumn + deltaX.computed;
@@ -714,7 +715,7 @@ function resizeAbsoluteColumn(index, positionOfColumn, containerElement, contain
   return true;
 }
 
-function resizeRatiosColumn(index, containerWidth) {
+function resizeRatiosColumn(index: number, containerWidth: number): boolean {
     const ratioGap = containerWidth / ratioDenominator.value;
     if (Math.abs(columnResizeIndicators[index].deltaX) < 0 || Math.abs(columnResizeIndicators[index].deltaX) > containerWidth) {
       return true;
@@ -727,7 +728,7 @@ function resizeRatiosColumn(index, containerWidth) {
     return true;
 }
 
-function calculateDeltaX(index, containerElement) {
+function calculateDeltaX(index: number, containerElement: Element) {
   switch (columnsWidths[index].unit) {
     case 'px':
       return {
@@ -766,7 +767,7 @@ function calculateDeltaX(index, containerElement) {
   }
 }
 
-function setOffsetParams(offsetParams, params) {
+function setOffsetParams(offsetParams: OffsetParams, params: OffsetParams): void {
   offsetParams.show = params.show;
   offsetParams.top = params.top;
   offsetParams.left = params.left;
@@ -775,14 +776,14 @@ function setOffsetParams(offsetParams, params) {
   offsetParams.filled = params.filled;
 }
 
-function unMarkOffsetHighlightMasks() {
+function unMarkOffsetHighlightMasks(): void {
   Object.keys(offsetHighlightMasks).forEach(key => {
     offsetHighlightMasks[key][EnumOffsetType.LEFT].show = false;
     offsetHighlightMasks[key][EnumOffsetType.RIGHT].show = false;
   });
 }
 
-function setViewportType(type) {
+function setViewportType(type: EnumViewportType): void {
   viewportType.value = type;
 }
 </script>
